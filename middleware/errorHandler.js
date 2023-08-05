@@ -20,6 +20,7 @@ const errorHandler = (err, req, res, next)=>{
             break;     
         default:
             console.log("Something went wrong");
+            console.log(err);
             break;
     }
 }; 
