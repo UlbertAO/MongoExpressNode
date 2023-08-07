@@ -12,6 +12,7 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 
 app.use("/api/contacts",require("./routes/contactRoutes")); // middleware /api/contacts is base for all
+app.use("/api/users",require("./routes/userRoutes"));
 
 app.use(errorHandler); // middleware for error handler
 
