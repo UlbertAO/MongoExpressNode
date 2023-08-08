@@ -4,12 +4,12 @@ const userSchema=mongoose.Schema(
     {
         username:{
             type:String,
-            required:[true,"pls add  username"],
-            unique:[true,'username already taken']
+            required:[true,"UserName is required"],
+            unique:[true,'UserName already taken, Try Again!!!']
         },
         password:{
             type:String,
-            required:[true,"pls add user password"],
+            required:[true,"Password for user is required"],
         },
     },
     {

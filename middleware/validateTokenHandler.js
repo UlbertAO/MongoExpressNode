@@ -19,7 +19,7 @@ const validateToken = asyncHandler( async(req,res,next)=>{
         })
     }else{
         res.status(401);
-        throw new Error("unauthorised or token is missing in req");
+        throw new Error("Unauthorised or token is missing in req");
     }
 });
 module.exports=validateToken;

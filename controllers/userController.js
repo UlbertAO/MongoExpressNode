@@ -10,7 +10,7 @@ const registerUser = asyncHandler(async(req,res)=>{
     const {username,password}= req.body;
     if(!username || !password){
         res.status(400);
-        throw new Error("all fields are mandatory");
+        throw new Error("UserName and Password are required.");
     }
     const useravail = await User.findOne({username});
     if(useravail){
@@ -19,10 +19,11 @@ const registerUser = asyncHandler(async(req,res)=>{
     }
     // Hash Password
     const hashPassword = await bcrypt.hash(password,5)
-    console.log("Hashed Password: ",hashPassword);
+    // console.log("Hashed Password: ",hashPassword);
+    // create user
     const user = await User.create({username,password:hashPassword})
     console.log(`User Created ${username}`);
-    res.status(201).json(user)
+    res.status(201).json({message:`user ${username} successfully created`})
 });
 
 //@desc login user
@@ -32,7 +33,7 @@ const loginUser = asyncHandler(async(req,res)=>{
     const {username, password}=req.body;
     if(!username||!password){
         res.status(400);
-        throw new Error("All fields are mandatory");
+        throw new Error("UserName and Password are required.");
     }
     const user = await User.findOne({username});
 
@@ -50,7 +51,7 @@ const loginUser = asyncHandler(async(req,res)=>{
 
     }else{
         res.status(401);
-        throw new Error("username or password is incorrect");
+        throw new Error("UserName or Password is incorrect");
     }
 });
 
@@ -59,7 +60,7 @@ const loginUser = asyncHandler(async(req,res)=>{
 //@access private
 const currentUser = asyncHandler(async(req,res)=>{
     
-    res.status(200).json({message:"current user"})
+    res.status(200).json({"LoggedIn_username":req.user.username})
 });
 
 module.exports = {registerUser, loginUser, currentUser}

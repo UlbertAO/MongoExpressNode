@@ -1,7 +1,8 @@
-// controller file will contail logic of request response
+// controller file will contain logic of request response
 
 const asyncHandler = require('express-async-handler')
 const  Contact = require('../models/contactModel');
+
 //@desc Get all contacts
 //@route get /api/contacts
 //@access private
@@ -18,11 +19,11 @@ const getContacts = asyncHandler(async(req,res)=>{
 // @route post /api/contacts
 // @access private
 const createContact = asyncHandler(async(req,res)=>{
-    console.log("the req body: ",req.body);
+    // console.log("the req body: ",req.body);
     const {name,phone}= req.body;
     if(!name || !phone){
         res.status(400);
-        throw new Error("All fields are mandatory")
+        throw new Error("Name & Phone no are required.")
     }
     const contact = await Contact.create({userid:req.user.id,name,phone})
     res.status(201).json(contact)
@@ -37,7 +38,7 @@ const getContact = asyncHandler(async(req,res)=>{
         res.status(404);
         throw new Error("Contact Not Found");
     }
-    res.status(200).json(contact)
+    res.status(200).json({name:contact.name,phone:contact.phone})
 });
 
 //@desc Update contact
@@ -51,7 +52,7 @@ const updateContact = asyncHandler(async(req,res)=>{
     }
     if(contact.userid.toString()!==req.user.id){
         res.status(403);
-        throw new Error("Users dont have permission to update other users contact")
+        throw new Error("Users don not have permission to update other users contact")
     }
 
     const updatedContact = await Contact.findByIdAndUpdate(req.params.id,req.body,{new:true});
@@ -70,7 +71,7 @@ const deleteContact = asyncHandler(async(req,res)=>{
     }
     if(contact.userid.toString()!==req.user.id){
         res.status(403);
-        throw new Error("Users dont have permission to delete other users contact")
+        throw new Error("Users don not have permission to delete other users contact")
     }
     
     await Contact.findByIdAndRemove(req.params.id);
